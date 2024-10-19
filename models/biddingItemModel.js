@@ -32,6 +32,10 @@ const itemSchema = mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    createdBy: {
+      type: String,
+      required: true
+    }
   },
   {
     timestamps: true,

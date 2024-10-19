@@ -6,7 +6,7 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   try {
     if (false) {
-      return res.status(400).status({ message: "Send all required fields" });
+      return res.status(400).send({ message: "Send all required fields" });
     }
     const newItem = {
       label: req.body.label,
