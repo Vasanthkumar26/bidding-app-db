@@ -35,6 +35,18 @@ const itemSchema = mongoose.Schema(
     createdBy: {
       type: String,
       required: true
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false
+    },
+    bidDetails: {
+      type: Array,
+      default: []
+    },
+    description: {
+      type: String,
+      required: true
     }
   },
   {
