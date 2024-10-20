@@ -11,6 +11,7 @@ router.post("/", async (req, res) => {
     const newItem = {
       label: req.body.label,
       minimumBid: req.body.minimumBid,
+      currentBid: req.body.minimumBid,
       updatedAt: Date.now(),
       createdAt: Date.now(),
       endsAt: Date.now() + 24 * 60 * 60 * 1000,
@@ -52,11 +53,7 @@ router.get(`/:id`, async (req, res) => {
 // Update a item
 router.put("/:id", async (req, res) => {
   try {
-    if (
-      !req.body.label ||
-      !req.body.description ||
-      !req.body.minimumBid
-    ) {
+    if (!req.body.label || !req.body.description || !req.body.minimumBid) {
       return res.status(400).status({ message: "Send all required fields" });
     }
     const { id } = req.params;
@@ -89,4 +86,31 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// Add bid
+router.put("/place-bid/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const newBid = req.body;
+    const item = await biddingItem.findByIdAndUpdate(
+      id,
+      {
+        $push: {
+          bidDetails: {
+            $each: [newBid],
+            $position: 0,
+          },
+        },
+        biddedBy: newBid?.emailId,
+        currentBid: newBid?.currentBid
+      },
+      { new: true, useFindAndModify: false }
+    );
+    if (!item) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+    return res.status(200).json(item);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
 export default router;

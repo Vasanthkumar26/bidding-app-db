@@ -11,7 +11,7 @@ const itemSchema = mongoose.Schema(
       required: true,
     },
     currentBid: {
-      type: Number,
+      type: Number
     },
     biddedBy: {
       type: String,
